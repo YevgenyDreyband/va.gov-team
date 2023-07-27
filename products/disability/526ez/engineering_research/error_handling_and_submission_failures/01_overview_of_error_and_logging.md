@@ -47,17 +47,21 @@ Logging is a bit more convoluted on the backend. There are a few different parad
 
 #### Ways we Log on the BE
 
-We have four apparent paradigms, which is actually all logging to the same place, a temp log file on the server instance.  That logfile is then scrapped and the data is propagated to Sentry, Datadog, Grafana, and who knows what else.  However, that is happening under the hood.  Here is what you will actually see in the code:
+We have five apparent paradigms, which is actually all logging to the same place, a temp log file on the server instance.  That logfile is then scrapped and the data is propagated to Sentry, Datadog, Grafana, and who knows what else.  However, that is happening under the hood.  Here is what you will actually see in the code:
  - `Rails.logger`… vs `SentryLogging`
  - `SentryLogging` uses rails_logger under the hood, so just skip the middleman and use `Rails.logger`…
- - Raven Gem
- - This appears to just be a wrapper for Sentry.  More investigation is required, but don’t use it unless you have a good reason.  This also appears to logging directly to sentry, skipping the logs, which would break our preferred convention, however I’m not sure of this.  Since we are deprecating Raven, it seems out of scope to dig further.
+     - Raven Gem
+     - This appears to just be a wrapper for Sentry.  More investigation is required, but don’t use it unless you have a good reason.  This also appears to logging directly to sentry, skipping the logs, which would break our preferred convention, however I’m not sure of this.  Since we are deprecating Raven, it seems out of scope to dig further.
  - EVSS Middleware
- - This requires a bit more investigation, but seems primarily responsible for logging error responses from the EVSS API.  This also writes to our temp log file under the hood.
+     - This requires a bit more investigation, but seems primarily responsible for logging error responses from the EVSS API.  This also writes to our temp log file under the hood.
  - Submission Failover logging
- - `vets-api/app/models/form526_submission.rb` is the entry point for all of our submission and failover code.  
- - TODO: This is the place to start for gaining a deeper understanding of how our submission / failover works.
- - Our failover has logging peppered throughout it, which again writes to the temp log file for scraping.
+     - `vets-api/app/models/form526_submission.rb` is the entry point for all of our submission and failover code.  
+     - TODO: This is the place to start for gaining a deeper understanding of how our submission / failover works.
+     - Our failover has logging peppered throughout it, which again writes to the temp log file for scraping.
+**UPDATE:**
+- `Datadog::Tracing`, aka the `ddtrace` gem. This appears to do for datadog what `SentryLogging` does for sentry, i.e. circumvent our logging paradigm and write directly to Datadog
+    - TODO: remove this and replace with Rails.logger
+        - AXIOM: this work MUST conserve any tagging or context added via the gem.
 
 #### The difference between logging and error raising
 
