@@ -62,6 +62,8 @@ We have five apparent paradigms, which is actually all logging to the same place
 - `Datadog::Tracing`, aka the `ddtrace` gem. This appears to do for datadog what `SentryLogging` does for sentry, i.e. circumvent our logging paradigm and write directly to Datadog
     - TODO: remove this and replace with Rails.logger
         - AXIOM: this work MUST conserve any tagging or context added via the gem.
+- `Shrine.logger` is also being used.  THis is a thin wrapper for `Rails.logger, so probably ok to swap out.
+    - TODO: more investigation required.
 
 #### The difference between logging and error raising
 
