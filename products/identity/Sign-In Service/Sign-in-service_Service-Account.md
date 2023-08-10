@@ -22,20 +22,20 @@ The Sign in Service offers a private key JWT flow to allow API authentication an
   service_account_config = SignIn::ServiceAccountConfig.new({
     service_account_id: SecureRandom.hex, # unique identifier for account connection
     description: 'VA Identity Dashboard API', # custom text description of account integration
-    scopes: ['http://localhost:3000/v0/sign_in/client_config'], # array string URL permissions granted to the client
+    scopes: ['http://localhost:3000/sign_in/client_configs'], # array string URL permissions granted to the client
     access_token_audience: 'http://identity-dashboard-api-dev.vfs.va.gov', # URL of the requesting account
     access_token_duration: 5.minutes, # duration of access token; maximum of 5 minutes
-    certificates: ["-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA24ECpVAz0UCzL3mYShHVblvJLDPzvC8w7CFU7WQKdJoSU1hDq6ntICrCmTPtjuZ2HD20z9BWeLtfnKvAy8lM7PmChfnXuD/azozJJcgFWSlg0Ii7R7gldiKlNhiNoyvT0bhZoJohKXpfYNlQCtsXEpTZUHb+dIuYR9BgfQt+7FRqpNgpCxGUuHjb29gISNJ0RV4QkPDzuzdLbn7QPL3xPoHaFchl2VJzNK7FittAgOyHakvyqs8RNFmRjZ5PC0i1Wufm0fVJ8/9TsWBaMBhHn7Y9Dto8hrWBdy4WJ1hg1IbldnfD2e1x5QyWBUPOhZFlx2nRpZt62NWKHNoPdL/gWQIDAQAB\n-----END PUBLIC KEY-----"]
+    certificates: ["-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw15IxiDnedSaypN4J85m\npqnW/lEhUVBOab8WH6yHP/TAybwuEA1g5FlvsK+JI8daB9wwtj5jEO7lVObrLXDj\n9n2nvA05UxaoeSihVJcZZyXeqszyceV5Jy19cQFeHQsNCH/f2rgWupyCe6UrqK8l\n9K/F5MILXLoDDKE1a/2mdoWl7dPy9eCBfkuoptKsWp/UYSzEUOeveppS+fqvcyoJ\nIRO1vMqt7Lf07RhxmzOEOF71IzxTUDbI/RLgO+LgEHPHOg9JW7Tubh0RvKD2W7xq\nMDQF/81t+Y+LQ8+jnpE/7LUrHWUMmQHd5BXECFoBi/XiR01tdcBtKdQfwmRydoPM\nZQIDAQAB\n-----END PUBLIC KEY-----\n"]
     # an array of one or more public certs provided by the client
   })
 
   # the same Service Account Config on a single line & without comments
-  service_account_config = SignIn::ServiceAccountConfig.new(service_account_id: SecureRandom.hex, description: 'VA Identity Dashboard API', scopes: ['http://localhost:3000/v0/sign_in/client_config'], access_token_audience: 'http://identity-dashboard-api-dev.vfs.va.gov', access_token_duration: 5.minutes, certificates: ["-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA24ECpVAz0UCzL3mYShHVblvJLDPzvC8w7CFU7WQKdJoSU1hDq6ntICrCmTPtjuZ2HD20z9BWeLtfnKvAy8lM7PmChfnXuD/azozJJcgFWSlg0Ii7R7gldiKlNhiNoyvT0bhZoJohKXpfYNlQCtsXEpTZUHb+dIuYR9BgfQt+7FRqpNgpCxGUuHjb29gISNJ0RV4QkPDzuzdLbn7QPL3xPoHaFchl2VJzNK7FittAgOyHakvyqs8RNFmRjZ5PC0i1Wufm0fVJ8/9TsWBaMBhHn7Y9Dto8hrWBdy4WJ1hg1IbldnfD2e1x5QyWBUPOhZFlx2nRpZt62NWKHNoPdL/gWQIDAQAB\n-----END PUBLIC KEY-----"])
+  service_account_config = SignIn::ServiceAccountConfig.new(service_account_id: SecureRandom.hex, description: 'VA Identity Dashboard API', scopes: ['http://localhost:3000/v0/sign_in/client_config'], access_token_audience: 'http://identity-dashboard-api-dev.vfs.va.gov', access_token_duration: 5.minutes, certificates: ["-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw15IxiDnedSaypN4J85m\npqnW/lEhUVBOab8WH6yHP/TAybwuEA1g5FlvsK+JI8daB9wwtj5jEO7lVObrLXDj\n9n2nvA05UxaoeSihVJcZZyXeqszyceV5Jy19cQFeHQsNCH/f2rgWupyCe6UrqK8l\n9K/F5MILXLoDDKE1a/2mdoWl7dPy9eCBfkuoptKsWp/UYSzEUOeveppS+fqvcyoJ\nIRO1vMqt7Lf07RhxmzOEOF71IzxTUDbI/RLgO+LgEHPHOg9JW7Tubh0RvKD2W7xq\nMDQF/81t+Y+LQ8+jnpE/7LUrHWUMmQHd5BXECFoBi/XiR01tdcBtKdQfwmRydoPM\nZQIDAQAB\n-----END PUBLIC KEY-----\n"])
   ```
 
 - To register a service account open a Rails console on the SiS instance you wish to register it on, then copy the above `service_account_config`, modified how you wish, and save it to the database with `service_account_config.save`.
 - Copy the `service_account_id` that you randomly generated or passed in, it will be required in your service account assertion.
-- You will need the private key paired with the public key you registered; the public key in the example above is paired with the [SiS test service account private key](https://github.com/department-of-veterans-affairs/vets-api/blob/master/spec/fixtures/sign_in/sample_service_account.pem).
+- You will need the private key paired with the certificate you registered; the certificate in the example above is paired with the [SiS sample service account private key](https://github.com/department-of-veterans-affairs/vets-api/blob/master/spec/fixtures/sign_in/sample_service_account.pem).
 
 ## Service Account Token Request
 
@@ -56,7 +56,7 @@ The Sign in Service offers a private key JWT flow to allow API authentication an
     "aud": "http://localhost:3000/v0/sign_in/token", # the SiS token route that is being requested
     "iat": <current Unix timestamp>, # current time in Unix/Epoch (10 digit) format
     "exp": <current Unix timestamp + 300>, # the assertion has a 5 minute duration
-    "scopes": ["http://localhost:3000/v0/sign_in/client_config"], # one or more requested scopes, validated against saved ServiceAccountConfig scopes
+    "scopes": ["http://localhost:3000/sign_in/client_configs"], # one or more requested scopes, validated against saved ServiceAccountConfig scopes
     "service_account_id": <copied_service_account_id>, # the client application's Service Account uuid
     "jti": SecureRandom.hex # a random identifier that can be used by the client to log & audit their Service Account interactions
   }
